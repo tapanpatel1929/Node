@@ -27,7 +27,7 @@ router.get("/:id", async function (req, res) {
 router.put("/:id", async function (req, res) {
   try {
     const { id } = req.params;
-    const data = await ProductModel.findByIdAndUpdate(id);
+    let data = await ProductModel.findByIdAndUpdate(id);
     res.send("updated successfully");
   } catch (error) {
     console.log(error);
@@ -51,10 +51,10 @@ router.patch("/:id", async function (req, res) {
   try {
     const { id } = req.params;
     const data = await ProductModel.findByIdAndUpdate(id);
-    res.send(data);
+    res.send("patch done");
   } catch (error) {
     console.log(error);
-    res.send("Product put Failed");
+    res.send("Product patch Failed");
   }
 });
 
