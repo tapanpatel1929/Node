@@ -1,63 +1,29 @@
 const express = require("express");
+const ProductController = require("../controller/product.controller");
+const validate = require("../middleware/validation.middleware");
+const productSchema = require("../schema/product.schema")
+
+const productController = new ProductController();
+
 const router = express.Router();
-const ProductModel = require("../models/product.model")
 
-
-router.get("/", async function (req, res) {
-  try {
-    const data = await ProductModel.find();
-    res.send(data);
-  } catch (error) {
-    console.log(error);
-    res.send("Product get failed");
-  }
+router.get("/", function (req, res, next) {
+  console.log("hello products");
+  res.send("get products data");
 });
 
-router.get("/:id", async function (req, res) {
-  try {
-    const { id } = req.params;
-    const data = await ProductModel.findById(id);
-    res.send(data);
-  } catch (error) {
-    console.log(error);
-    res.send("Product Get Failed");
-  }
+router.get("/:id", function (req, res, next) {
+  res.send("get products data");
 });
 
-router.put("/:id", async function (req, res) {
-  try {
-    const { id } = req.params;
-    let data = await ProductModel.findByIdAndUpdate(id);
-    res.send("updated successfully");
-  } catch (error) {
-    console.log(error);
-    res.send("Product put Failed");
-  }
+router.post("/", validate(productSchema), productController.saveProduct);
+
+router.put("/:id", productController.updateProruct);
+
+router.patch("/:id", productController.patchProduct);
+
+router.delete("/:id", function (req, res, next) {
+  res.send("get products data");
 });
-
-
-router.delete("/:id", async function (req, res) {
-  try {
-    const { id } = req.params;
-    const data = await ProductModel.findByIdAndDelete(id);
-    res.send("data deleted ");
-  } catch (error) {
-    console.log(error);
-    res.send("Product Delete Failed");
-  }
-});
-
-router.patch("/:id", async function (req, res) {
-  try {
-    const { id } = req.params;
-    const data = await ProductModel.findByIdAndUpdate(id);
-    res.send("patch done");
-  } catch (error) {
-    console.log(error);
-    res.send("Product patch Failed");
-  }
-});
-
-
 
 module.exports = router;
